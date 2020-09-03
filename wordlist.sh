@@ -12,8 +12,8 @@ White='\033[0;37m'        # White
 NC='\033[0m' # No Color
 
 
-    
-Usage(){        
+
+Usage(){
         while read -r line; do
                 printf "%b\n" "$line"
         done  <<-EOF
@@ -65,21 +65,30 @@ wayback(){
 
 
 
+
+
 curling() {
         echo "${Yellow}Curling${NC}"
         echo '\n'
-        cat $list | httpx -threads 4 -o httpx.txt 
+        cat $list | httpx -threads 4 -o httpx.txt
         cat httpx.txt |xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt
-        rm httpx.txt
 }
 
+harkcrawl(){
 
 
+    echo "${Yellow} Harkcrawler${NC}"
+    echo "\n"
+    cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u keys | sort -u | tee -a words.txt
+    cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u paths | sort -u | tee -a words.txt
+    rm httpx.txt
+
+ }
 
 jsfiles(){
         echo "${Yellow}From JS Files${NC}"
         echo '\n'
-        
+
         gau $domain | head -n 1000 | fff -s 200 -s 404 -o out
         grep -roh "\"\/[a-zA-Z0-9_/?=&]*\"" out/ | sed -e 's/^"//' -e 's/"$//' | sort -u | tee -a words.txt
 
@@ -110,13 +119,15 @@ bold=$(tput bold)
 Main() {
 
         {
-        jsfiles    
+        jsfiles
         curling
         loopEndpoints
         Endpoints
         wayback
+        hakcrawl
         jsfiles
         sorting
+
 }
 }
 domains=False
