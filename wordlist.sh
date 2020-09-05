@@ -95,22 +95,22 @@ wayback(){
         cat way.txt | unfurl -u keys| tee -a wayback.txt
         cat way.txt |unfurl -u paths|tee -a wayback.txt
         sed 's#/#\n#g' wayback.txt  |sort -u |tee -a waybacks.txt
-        rm wayback.txt | sed -i -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.wolf\|\.bmp//g' waybacks.txt
+        rm wayback.txt | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a  waybacks.txt
 
 
 
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $10}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $11}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $12}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $13}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $10}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $11}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a |tee -a waybacks.txt
 
 
 
@@ -127,10 +127,10 @@ harkcrawl(){
 
 
      if [ $domain ];then
-        echo "${Yellow} Harkcrawler${NC}"
+        echo "${Yellow} Hakcrawler${NC}"
         echo "\n"
-        echo $domain | hakrawler -plain -usewayback -scope yolo | unfurl -u keys | sort -u | tee -a words.txt
-        echo $domain | hakrawler -plain -usewayback -scope yolo | unfurl -u paths | sort -u | tee -a words.txt
+        echo $domain | hakrawler -plain -usewayback -scope yolo | unfurl -u keys | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | sort -u | tee -a words.txt
+        echo $domain | hakrawler -plain -usewayback -scope yolo | unfurl -u paths| grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | sort -u | tee -a words.txt
         rm httpx.txt
     fi
  }
@@ -153,18 +153,18 @@ loopEndpoints() {
         done
 
 
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $10}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $11}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $12}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $13}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $10}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $11}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
+        cat gau.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'|tee -a wordlist.txt
 
         rm gau.txt
 
@@ -184,24 +184,24 @@ loopWayback(){
         cat way.txt | unfurl -u keys| tee -a wayback.txt
         cat way.txt |unfurl -u paths|tee -a wayback.txt
         sed 's#/#\n#g' wayback.txt  |sort -u |tee -a waybacks.txt
-        rm wayback.txt  | sed -i -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.wolf\|\.bmp//g' waybacks.txt
+        rm wayback.txt  | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | tee -a waybacks.txt
 
 
 
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $10}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $11}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $12}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $13}' | sort -u | sed  -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.woff\|\.woff2\|\.bmp//g'|tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $10}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $11}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
+        cat way.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' |tee -a waybacks.txt
 
-        rm way.txt
+        rm way.txtss
     fi
 
     }
@@ -226,10 +226,10 @@ loopHarkcrawl(){
 
 
     if [ -f $domains ];then
-        echo "${Yellow}loopHarkcrawler${NC}"
+        echo "${Yellow}loopHakcrawler${NC}"
         echo "\n"
-        cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u keys | sort -u | tee -a words.txt
-        cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u paths | sort -u | tee -a words.txt
+        cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u keys | grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp' | sort -u  | tee -a words.txt
+        cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u paths| grep -v '.css\|.png\|.jpeg\|.jpg\|.svg\|.gif\|.woff\|.woff2\|.bmp'| sort -u  |tee -a words.txt
         rm httpx.txt
     fi
  }
@@ -314,9 +314,6 @@ loopMain(){
 
 }
 
-
-domains=False
-domain=False
 
 
 while [ -n "$1" ]; do
