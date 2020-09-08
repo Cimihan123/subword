@@ -33,7 +33,7 @@ EOF
 
 Endpoints() {
 
-   
+
 
         echo "${Yellow}Endpoints${NC}"
         echo "\n"
@@ -54,20 +54,20 @@ Endpoints() {
 
 
          rm gau.txt
-    
+
 }
 
 
 
 curling() {
 
-   
+
         echo "${Yellow}Curling${NC}"
         echo '\n'
         echo $domain | httpx -threads 4 -o http.txt
         cat http.txt |xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt
         rm http.txt
-    
+
 }
 
 
@@ -75,12 +75,12 @@ curling() {
 jsles(){
 
 
-     
+
         echo "${Yellow}From JS les${NC}"
         echo '\n'
         gau $domain | head -n 1000 | fff -s 200 -s 404 -o out
         grep -roh "\"\/[a-zA-Z0-9_/?=&]*\"" out/ | sed -e 's/^"//' -e 's/"$//' | sort -u | tee -a words.txt
-    
+
 
 
 }
@@ -88,7 +88,7 @@ jsles(){
 
 wayback(){
 
-     
+
         echo "${Yellow}Waybackurls"${NC}
         echo "\n"
         echo $domain | waybackurls | tee -a way.txt
@@ -112,11 +112,12 @@ wayback(){
         cat way.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u  | tee -a |tee -a waybacks.txt
         cat way.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u  | tee -a |tee -a waybacks.txt
 
+	rm way.txt
 
 
 
 
-    
+
 
     }
 
@@ -126,13 +127,13 @@ wayback(){
 hakcrawl(){
     echo $domain
 
-    
+
         echo "${Yellow} Hakcrawler${NC}"
         echo "\n"
         echo $domain | hakrawler -plain -usewayback -scope yolo | unfurl -u keys  | sort -u | tee -a words.txt
         echo $domain | hakrawler -plain -usewayback -scope yolo | unfurl -u paths | sort -u | tee -a words.txt
-        rm httpx.txt
-    
+
+
  }
 
 
@@ -144,12 +145,12 @@ hakcrawl(){
 
 loopEndpoints() {
 
-    
+
         echo "${Yellow}loopEndpoints${NC}"
         echo '\n'
         for i in $(cat $domains);
         do
-        gau $i| tee -a gau.txt |  unfurl -u keys | tee -a wordlist.txt ; gau $i | unfurl -u paths|tee -a end.txt; sed 's#/#\n#g' end.txt  | sort -u | tee -a test.txt | sort -u ;rm end.txt  | sed -i -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.wolf\|\.bmp//g' test.txt              
+        gau $i| tee -a gau.txt |  unfurl -u keys | tee -a wordlist.txt ; gau $i | unfurl -u paths|tee -a end.txt; sed 's#/#\n#g' end.txt  | sort -u | tee -a test.txt | sort -u ;rm end.txt  | sed -i -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.wolf\|\.bmp//g' test.txt
         done
 
 
@@ -168,7 +169,7 @@ loopEndpoints() {
 
         rm gau.txt
 
-    
+
  }
 
 
@@ -176,7 +177,7 @@ loopEndpoints() {
 
 loopWayback(){
 
-     
+
         echo "${Yellow}loopWaybackurls"${NC}
         echo "\n"
         cat $domains | waybackurls | tee way.txt
@@ -202,7 +203,7 @@ loopWayback(){
         cat way.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u  |tee -a waybacks.txt
 
         rm way.txt
-    
+
 
     }
 
@@ -213,25 +214,25 @@ loopWayback(){
 
 loopcurling() {
 
-     
+
 
         echo "${Yellow}loopCurling${NC}"
         echo '\n'
         cat $domains | httpx -threads 4 -o httpx.txt
         cat httpx.txt |xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt
-    
+
 }
 
 loopHarkcrawl(){
 
 
-    
+
         echo "${Yellow}loopHakcrawler${NC}"
         echo "\n"
         cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u keys  | sort -u  | tee -a words.txt
         cat httpx.txt | hakrawler -plain -usewayback -scope yolo | unfurl -u paths| sort -u  |tee -a words.txt
         rm httpx.txt
-    
+
  }
 
 
@@ -239,29 +240,90 @@ loopHarkcrawl(){
 
 loopSorting() {
 
-     
+
         echo "${Yellow}Single Sorintg${NC} "
         echo "\n"
         mkdir endpoint
         sort -u  words.txt sorted.txt wordlist.txt test.txt waybacks.txt > endpoint/sorted.txt
-        cat endpoint/sorted.txt | grep -v '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$' | tee -a endpoint/wordlists.txt
-       
-        rm words.txt endpoint/sorted.txt wordlist.txt test.txt waybacks.txt
+        cat endpoint/sorted.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$' | tee -a endpoint/wordlists.txt
 
-    
+        rm words.txt endpoint/sorted.txt wordlist.txt test.txt waybacks.txt
+        
+        
+             
+
+	#checking if starting word is '/' or not
+	for i in $(cat endpoint/wordlists.txt);do
+	    starting=$(echo $i | awk '{print substr ($0,0,1)}' )
+	    if [ $starting = '/' ];then
+		echo $i >> do.txt
+	    else
+		echo '/'$i >> do.txt
+	    fi
+
+	done
+
+	#checking if ending word is '/' or not
+
+	for i in $(cat do.txt);do
+	    end=$(echo $i | awk '{print substr ($0,length,1)}' )
+	    if [ $end = '/' ];then
+		echo $i | rev | cut -c 2-  |rev   >> endpoint/wordlist.txt
+	    else
+		echo $i >> endpoint/wordlist.txt
+	    fi
+
+	done
+	
+	
+	rm endpoint/wordlists.txt
+
+
 }
 
 
 singleSorting() {
 
-    
+
         echo "${Yellow}Loop Sorintg${NC} "
         echo "\n"
         mkdir endpoint
         sort -u words.txt wordlist.txt waybacks.txt   > endpoint/sorted.txt
-        cat endpoint/sorted.txt | grep -v '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$' | tee -a endpoint/wordlists.txt
+        cat endpoint/sorted.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$'  | tee -a endpoint/wordlists.txt
+
         rm words.txt  wordlist.txt waybacks.txt endpoint/sorted.txt
-    
+        
+        
+        
+        
+      
+
+	#checking if starting word is '/' or not
+	for i in $(cat endpoint/wordlists.txt);do
+	    starting=$(echo $i | awk '{print substr ($0,0,1)}' )
+	    if [ $starting = '/' ];then
+		echo $i >> do.txt
+	    else
+		echo '/'$i >> do.txt
+	    fi
+
+	done
+
+	#checking if ending word is '/' or not
+
+	for i in $(cat do.txt);do
+	    end=$(echo $i | awk '{print substr ($0,length,1)}' )
+	    if [ $end = '/' ];then
+		echo $i | rev | cut -c 2-  |rev   >> endpoint/wordlist.txt
+	    else
+		echo $i >> endpoint/wordlist.txt
+	    fi
+
+	done
+	
+	
+	rm endpoint/wordlists.txt
+
 }
 
 
@@ -340,16 +402,20 @@ case "$1" in
         *)
                 echo  "${Cyan}[-] Unknown Option:${NC}${Purple} $1";
                 Usage;;
-   
+
         esac
         shift
 done
 
 
-if [ "$1"==  ]; then
+if [ "$1" = '' ]; then
 
-    echo "${Yellow}Either give -d/--domain name only or -dd/--domains text file"
-    Usage
+    	echo "${Yellow}Either give -d/--domain name only or -dd/--domains text file"
+    	Usage
+elif [ "$2" = "" ];then
+
+	echo "${Yellow}Either give -d/--domain name only or -dd/--domains text file"
+	Usage
+
 fi
-
 
