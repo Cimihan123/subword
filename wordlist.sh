@@ -241,16 +241,16 @@ loopHarkcrawl(){
 loopSorting() {
 
 
-        echo "${Yellow}Single Sorintg${NC} "
+        echo "${Yellow}Loop Sorintg${NC} "
         echo "\n"
         mkdir endpoint
         sort -u  words.txt sorted.txt wordlist.txt test.txt waybacks.txt > endpoint/sorted.txt
         cat endpoint/sorted.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$' | tee -a endpoint/wordlists.txt
 
         rm words.txt endpoint/sorted.txt wordlist.txt test.txt waybacks.txt
-        
-        
-             
+
+
+
 
 	#checking if starting word is '/' or not
 	for i in $(cat endpoint/wordlists.txt);do
@@ -274,8 +274,8 @@ loopSorting() {
 	    fi
 
 	done
-	
-	
+
+
 	rm endpoint/wordlists.txt
 
 
@@ -285,18 +285,18 @@ loopSorting() {
 singleSorting() {
 
 
-        echo "${Yellow}Loop Sorintg${NC} "
+        echo "${Yellow}Single Sorintg${NC} "
         echo "\n"
         mkdir endpoint
         sort -u words.txt wordlist.txt waybacks.txt   > endpoint/sorted.txt
         cat endpoint/sorted.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$'  | tee -a endpoint/wordlists.txt
 
         rm words.txt  wordlist.txt waybacks.txt endpoint/sorted.txt
-        
-        
-        
-        
-      
+
+
+
+
+
 
 	#checking if starting word is '/' or not
 	for i in $(cat endpoint/wordlists.txt);do
@@ -320,8 +320,8 @@ singleSorting() {
 	    fi
 
 	done
-	
-	
+
+
 	rm endpoint/wordlists.txt
 
 }
@@ -341,7 +341,9 @@ sigleMain() {
 
 
         echo 'Single starts'
-
+        cc=$(echo $domain | wc -l)
+        if [ $cc -eq 1 ] && [ $domain != ''  ]
+        then
         #single
             hakcrawl
             Endpoints
@@ -350,31 +352,36 @@ sigleMain() {
             wayback
 
 
-
-
-
-
-
-
         #sorting
-        singleSorting
+            singleSorting
+
+        else
+            echo  "${Cyan}Invalid"
+         fi
+
 
 
 }
 
 loopMain(){
 
-        echo 'Looping starts'
-        #loop
-        loopcurling
-        loopHarkcrawl
-        loopEndpoints
-        loopWayback
+         echo "${Yellow}Looping starts\n${NC}"
+         cc=$(cat $domains | wc | awk '{ print $1}')
+         if [ $cc -gt 0 ]
+         then
+
+            #loop
+            loopcurling
+            loopHarkcrawl
+            loopEndpoints
+            loopWayback
 
 
-        #sorting
-        loopSorting
-
+            #sorting
+            loopSorting
+         else
+           echo  "${Cyan}Invalid or File is Empty"
+         fi
 
 
 }
@@ -388,16 +395,22 @@ case "$1" in
         -d|--domain)
                 domain=$2
                 sigleMain
-                shift ;;
+                shift;;
+
         -dd|--domains)
                 domains=$2
+                if [ -z "$2"  ];then
+                    echo "${Yellow}Invalid${NC}"
+                else
                 loopMain
-                shift ;;
+
+                fi
+                shift;;
 
         -h|--help)
                 help=$2
                 Usage
-                shift ;;
+                shift;;
 
         *)
                 echo  "${Cyan}[-] Unknown Option:${NC}${Purple} $1";
@@ -408,14 +421,10 @@ case "$1" in
 done
 
 
-if [ "$1" = '' ]; then
+if [ "$domains" = '' ] && [ "$domain" = ''  ]; then
 
     	echo "${Yellow}Either give -d/--domain name only or -dd/--domains text file"
     	Usage
-elif [ "$2" = "" ];then
-
-	echo "${Yellow}Either give -d/--domain name only or -dd/--domains text file"
-	Usage
 
 fi
 
