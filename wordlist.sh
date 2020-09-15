@@ -65,7 +65,11 @@ curling() {
         echo "${Yellow}Curling${NC}"
         echo '\n'
         echo $domain | httpx -threads 4 -o http.txt
-        cat http.txt |xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt
+        curl https://tools.ietf.org/html/rfc1866 -o rfc.html
+        cat httpx.txt | xargs curl -s -L >> curled.html
+        cat curled.html | tok | tr '[:upper:]' '[:lower:]' | sort -u > curled.txt
+        cat rfc.html | tok | tr '[:upper:]' '[:lower:]' | sort -u > rfc.txt
+        comm -13 rfc.txt curled.txt | sort -u | tee -a words.txt
         rm http.txt
 
 }
@@ -219,7 +223,11 @@ loopcurling() {
         echo "${Yellow}loopCurling${NC}"
         echo '\n'
         cat $domains | httpx -threads 4 -o httpx.txt
-        cat httpx.txt |xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt
+        curl https://tools.ietf.org/html/rfc1866 -o rfc.html
+        cat httpx.txt | xargs curl -s -L >> curled.html
+        cat curled.html | tok | tr '[:upper:]' '[:lower:]' | sort -u > curled.txt
+        cat rfc.html | tok | tr '[:upper:]' '[:lower:]' | sort -u > rfc.txt
+        comm -13 rfc.txt curled.txt | sort -u | tee -a words.txt
 
 }
 
