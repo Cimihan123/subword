@@ -11,18 +11,110 @@ Cyan='\033[0;36m'         # Cyan
 White='\033[0;37m'        # White
 NC='\033[0m' # No Color
 
+echo ${Cyan}"
 
+          __        __   ___    ____    ____     ____    ___    _     
+          \ \      / /  / _ \  |  _ \  |  _ \   / ___|  / _ \  | |    
+           \ \ /\ / /  | | | | | |_) | | | | | | |     | | | | | |    
+            \ V  V /   | |_| | |  _ <  | |_| | | |___  | |_| | | |___ 
+             \_/\_/     \___/  |_| \_\ |____/   \____|  \___/  |_____|
+                                                                      
+ 
 
+                                                             By-Cimihan
+
+"${NC}
+echo ${Red}"*---  ---*---  ---*---  ---*---  ---*---  ---*---  ---*---  ---*---  ---*"${NC}
 Usage(){
         while read -r line; do
                 printf "%b\n" "$line"
         done  <<-EOF
+\r ${Green}|- ${NC} ${Yellow} -d/--domain\t Domain to extract endpoints
+\r ${Green}|- ${NC} ${Yellow} -dd/--domains\t Give List of  Domains file to extract endpoints
+\r ${Green}|- ${NC} ${Yellow} -f/--file\t Give urls file
 
-\r ${Red}-d --domain\t Domain to extract endpoints
-\r -dd --domains\t Give Domains file to extract endpoints
 
 EOF
  exit 1
+}
+
+
+
+
+
+
+#Gau file or wayback file or hakcrawl or anyother related file for extracting endpoints
+
+urlsFile(){
+
+    echo "${Yellow}urlsFile${NC}"
+    echo "\n"
+
+   
+    cat $file | unfurl -u keys  | tee file.txt
+    cat $file | unfurl -u paths | tee -a file.txt
+    sed 's#/#\n#g' wayback.txt  | sort -u | tee -a endpoints.txt   
+
+    cat $file | unfurl -u paths | awk -F'/' '{print $2}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $3}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $4}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $5}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $6}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $7}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $8}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $9}' | sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $10}'| sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $11}'| sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $12}'| sort -u |tee -a endpoints.txt
+    cat $file | unfurl -u paths | awk -F'/' '{print $13}'| sort -u |tee -a endpoints.txt  
+
+
+
+    cat $file | head -n 1000 | fff -s 200 -s 404 -o out
+    grep -roh "\"\/[a-zA-Z0-9_/?=&]*\"" out/ | sed -e 's/^"//' -e 's/"$//' | sort -u | tee -a endpoints.txt
+
+    #sorting
+    sort -u endpoints.txt   > endpoint/sorted.txt
+    cat endpoint/sorted.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$'  | tee -a endpoint/wordlists.txt
+
+
+    rm file.txt
+    rm -rdf out/
+
+
+
+
+
+	#checking if starting word is '/' or not
+	for i in $(cat endpoint/wordlists.txt);do
+	    starting=$(echo $i | awk '{print substr ($0,0,1)}' )
+	    if [ $starting = '/' ];then
+		echo $i >> do.txt
+	    else
+		echo '/'$i >> do.txt
+	    fi
+
+	done
+
+	#checking if ending word is '/' or not
+
+	for i in $(cat do.txt);do
+	    end=$(echo $i | awk '{print substr ($0,length,1)}' )
+	    if [ $end = '/' ];then
+		echo $i | rev | cut -c 2-  |rev   >> endpoint/wordlist.txt
+	    else
+		echo $i >> endpoint/wordlist.txt
+	    fi
+
+	done
+
+    rm do.txt endpoints.txt  endpoint/sorted.txt
+
+
+
+
+
+
 }
 
 
@@ -99,7 +191,7 @@ wayback(){
         cat way.txt | unfurl -u keys| tee -a wayback.txt
         cat way.txt |unfurl -u paths|tee -a wayback.txt
         sed 's#/#\n#g' wayback.txt  |sort -u |tee -a waybacks.txt
-        rm wayback.txt  | tee -a  waybacks.txt
+        rm wayback.txt  
 
 
 
@@ -189,7 +281,7 @@ loopWayback(){
         cat way.txt | unfurl -u keys| tee -a wayback.txt
         cat way.txt |unfurl -u paths|tee -a wayback.txt
         sed 's#/#\n#g' wayback.txt  |sort -u |tee -a waybacks.txt
-        rm wayback.txt   | tee -a waybacks.txt
+        rm wayback.txt   
 
 
 
@@ -415,6 +507,11 @@ case "$1" in
                 fi
                 shift;;
 
+        -f|--file)
+                file=$2
+                urlsFile
+                shift;;        
+
         -h|--help)
                 help=$2
                 Usage
@@ -429,10 +526,11 @@ case "$1" in
 done
 
 
-if [ "$domains" = '' ] && [ "$domain" = ''  ]; then
+if [ "$domains" = '' ] && [ "$domain" = ''  ] && [ "$file" = ''  ]; then
 
-    	echo "${Yellow}Either give -d/--domain name only or -dd/--domains text file"
+    	echo "${Yellow}  Either give -d/--domain name only or -dd/--domains text file"
     	Usage
 
 fi
+
 
