@@ -53,20 +53,7 @@ urlsFile(){
    
     cat $file | unfurl -u keys  | tee file.txt
     cat $file | unfurl -u paths | tee -a file.txt
-    sed 's#/#\n#g' wayback.txt  | sort -u | tee -a endpoints.txt   
-
-    cat $file | unfurl -u paths | awk -F'/' '{print $2}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $3}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $4}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $5}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $6}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $7}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $8}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $9}' | sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $10}'| sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $11}'| sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $12}'| sort -u |tee -a endpoints.txt
-    cat $file | unfurl -u paths | awk -F'/' '{print $13}'| sort -u |tee -a endpoints.txt  
+    sed 's#/#\n#g' file.txt  | sort -u | tee -a endpoints.txt   
 
 
     mkdir endpoint/
@@ -74,8 +61,8 @@ urlsFile(){
     grep -roh "\"\/[a-zA-Z0-9_/?=&]*\"" out/ | sed -e 's/^"//' -e 's/"$//' | sort -u | tee -a endpoints.txt
 
     #sorting
-    sort -u endpoints.txt   > endpoint/sorted.txt
-    cat endpoint/sorted.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$'  | tee -a endpoint/wordlists.txt
+   
+    cat endpoints.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$'  | tee -a endpoint/wordlists.txt
 
 
     rm file.txt
@@ -101,14 +88,15 @@ urlsFile(){
 	for i in $(cat do.txt);do
 	    end=$(echo $i | awk '{print substr ($0,length,1)}' )
 	    if [ $end = '/' ];then
-		echo $i | rev | cut -c 2-  |rev   >> endpoint/wordlist.txt
+		echo $i | rev | cut -c 2-  |rev  >> endpoint/wordlist.txt
 	    else
 		echo $i >> endpoint/wordlist.txt
 	    fi
 
 	done
 
-    rm do.txt endpoints.txt  endpoint/sorted.txt endpoint/wordlists.txt
+    sort -u endpoint/wordlist.txt   > endpoint/endpoints.txt
+    rm do.txt endpoints.txt  endpoint/wordlist.txt endpoint/wordlists.txt
 
 
 
@@ -131,19 +119,7 @@ Endpoints() {
         echo "\n"
         gau $domain | tee gau.txt | unfurl -u keys | tee -a wordlist.txt ; gau $domain | unfurl -u paths|tee -a ends.txt; sed 's#/#\n#g' ends.txt  | sort -u | tee -a wordlist.txt | sort -u ;rm ends.txt  | sed -i -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.wolf\|\.bmp//g' wordlist.txt
 
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $10}'| sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $11}'| sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u |tee -a wordlist.txt
-
+    
 
          rm gau.txt
 
@@ -195,18 +171,7 @@ wayback(){
 
 
 
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $10}'| sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $11}'| sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u  | tee -a |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u  | tee -a |tee -a waybacks.txt
+ 
 
 	rm way.txt
 
@@ -250,18 +215,6 @@ loopEndpoints() {
         done
 
 
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $10}'| sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $11}'| sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u |tee -a wordlist.txt
-        cat gau.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u |tee -a wordlist.txt
 
         rm gau.txt
 
@@ -285,18 +238,6 @@ loopWayback(){
 
 
 
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $2}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $3}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $4}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $5}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $6}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $7}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $8}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $9}' | sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $10}'| sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $11}'| sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $12}'| sort -u  |tee -a waybacks.txt
-        cat way.txt | unfurl -u paths | awk -F'/' '{print $13}'| sort -u  |tee -a waybacks.txt
 
         rm way.txt
 
@@ -344,10 +285,10 @@ loopSorting() {
         echo "${Yellow}Loop Sorintg${NC} "
         echo "\n"
         mkdir endpoint
-        sort -u  words.txt sorted.txt wordlist.txt test.txt waybacks.txt > endpoint/sorted.txt
-        cat endpoint/sorted.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$' | tee -a endpoint/wordlists.txt
+        sort -u  words.txt sorted.txt wordlist.txt test.txt waybacks.txt > endpoint/sort.txt
+        cat endpoint/sort.txt | grep -iv '.css$\|.png$\|.jpeg$\|.jpg$\|.svg$\|.gif$\|.woff$\|.woff2$\|.bmp$\|.mp4$\|.mp3$\|.js$' | tee -a endpoint/wordlists.txt
 
-        rm words.txt endpoint/sorted.txt wordlist.txt test.txt waybacks.txt
+        rm words.txt endpoint/sort.txt wordlist.txt test.txt waybacks.txt
 
 
 
@@ -375,8 +316,12 @@ loopSorting() {
 
 	done
 
+    rm endpoint/wordlists.txt
+    sort -u endpoint/wordlist.txt > endpoint/wordlists.txt
+    rm endpoint/wordlist.txt
 
-	rm endpoint/wordlists.txt
+
+	
 
 
 }
@@ -422,7 +367,10 @@ singleSorting() {
 	done
 
 
-	rm endpoint/wordlists.txt
+
+    rm endpoint/wordlists.txt
+    sort -u endpoint/wordlist.txt > endpoint/wordlists.txt
+    rm endpoint/wordlist.txt
 
 }
 
