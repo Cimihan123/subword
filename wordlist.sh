@@ -69,7 +69,7 @@ urlsFile(){
     cat $file | unfurl -u paths | awk -F'/' '{print $13}'| sort -u |tee -a endpoints.txt  
 
 
-
+    mkdir endpoint/
     cat $file | head -n 1000 | fff -s 200 -s 404 -o out
     grep -roh "\"\/[a-zA-Z0-9_/?=&]*\"" out/ | sed -e 's/^"//' -e 's/"$//' | sort -u | tee -a endpoints.txt
 
@@ -108,7 +108,7 @@ urlsFile(){
 
 	done
 
-    rm do.txt endpoints.txt  endpoint/sorted.txt
+    rm do.txt endpoints.txt  endpoint/sorted.txt endpoint/wordlists.txt
 
 
 
